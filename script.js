@@ -1,21 +1,30 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // Function to fetch weather data
-    function fetchWeather() {
-        // Example of using a weather API (replace with a real API key)
-        const apiKey = 'YOUR_API_KEY';
-        const city = 'London';
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+const todoList = document.getElementById('todo-list');
+const newTodoInput = document.getElementById('new-todo');
+const addButton = document.getElementById('add-button');
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('location').textContent = `Location: ${data.name}`;
-                document.getElementById('temperature').textContent = `Temperature: ${data.main.temp} °C`;
-                document.getElementById('condition').textContent = `Condition: ${data.weather[0].description}`;
-            })
-            .catch(error => console.error('Error fetching weather data:', error));
-    }
+function addTodo(text) {
+  const listItem = document.createElement('li');
+  listItem.textContent = text;
+  todoList.appendChild(listItem);
+}
 
-    // Fetch weather data when the widget loads
-    fetchWeather();
+addButton.addEventListener('click', () => {
+  const newTodoText = newTodoInput.value.trim();
+  if (newTodoText.length > 0) {
+    addTodo(newTodoText);
+    newTodoInput.value = ''; // Clear input after adding
+  }
 });
+
+function updateTime() {
+    const date = new Date();
+    const hours = date.getHours() % 12 || 12;  // Convert to 12-hour format
+    const minutes = date.getMinutes().toString().padStart(2, '0'); // Add leading zero for single digits
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+    document.getElementById('time').textContent = timeString;
+}
+  
+setInterval(updateTime, 1000); // Update time every second
+updateTime(); // Update time on initial load
+  
